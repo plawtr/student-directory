@@ -1,5 +1,6 @@
-#! #!/usr/bin/env ruby
+#!/usr/bin/env ruby
 
+# print a list of students
 puts '___________________________________________'
 puts 'The students of my cohort at Makers Academy'
 puts '___________________________________________'
@@ -20,8 +21,10 @@ puts 'Roy'
 puts 'Liviu'
 puts 'Makis'
 puts '___________________________________________'
+
+# print the total 
 print "Overall we have "
-print 9 
+print 16 
 puts ' great students'
 puts '___________________________________________'
 

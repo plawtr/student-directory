@@ -7,5 +7,5 @@ How to use
 ----------
 
 ```shell
-ruby directoy.rb
+ruby directory.rb
 ```

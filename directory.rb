@@ -4,7 +4,7 @@
 
 #create an array of students
 
-students = [
+students_old = [
  { :name =>'Andrey', 	:cohort => :January},
  { :name =>'James', 	:cohort => :January},
  { :name =>'Peter', 	:cohort => :January},
@@ -22,6 +22,25 @@ students = [
  { :name =>'Liviu', 	:cohort => :January},
  { :name =>'Makis', 	:cohort => :January}
 ]
+
+#ask for user inout
+def input_students 
+	puts "Please enter the names of the students.\nTo finish, just hit return twice."
+	#create an empty array
+	students = []
+	#get the first name
+	name = gets.chomp
+	#while name is not empty repeat
+	while !name.empty? do
+		#add student hash to the array
+		students << {:name => name, :cohort => :January}
+		puts "Now, we have #{students.length} students."
+		#get anothe rname from user
+		name = gets.chomp 
+	end
+	#return the array of students
+	students
+end
 
 # print the header
 def print_header
@@ -45,6 +64,12 @@ def print_footer(students)
 end
 
 # call the methods
+students = input_students
+
+print_header
+print(students_old)
+print_footer(students_old)
+
 print_header
 print(students)
 print_footer(students)

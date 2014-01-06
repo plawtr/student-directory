@@ -27,10 +27,10 @@ students = [
 puts '___________________________________________'
 puts 'The students of my cohort at Makers Academy'
 puts '___________________________________________'
-student.each {|name| puts name} 
+students.each {|name| puts name} 
 puts '___________________________________________'
 
 # print the total 
-puts "Overall we have #{student.length} great students"
+puts "Overall we have #{students.length} great students"
 puts '___________________________________________'
 

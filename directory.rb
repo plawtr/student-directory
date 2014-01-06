@@ -23,14 +23,27 @@ students = [
  'Makis'
 ]
 
-# print a list of students
-puts '___________________________________________'
-puts 'The students of my cohort at Makers Academy'
-puts '___________________________________________'
-students.each {|name| puts name} 
-puts '___________________________________________'
+# print the header
+def print_header
+	puts '___________________________________________'
+	puts 'The students of my cohort at Makers Academy'
+	puts '___________________________________________'
+end
 
-# print the total 
-puts "Overall we have #{students.length} great students"
-puts '___________________________________________'
+# print the body of the table with student names
+def print(names)
+	names.each {|name| puts name} 
+end
+
+# print the footer
+def print_footer(names)
+	puts '___________________________________________'
+	puts "Overall we have #{names.length} great students"
+	puts '___________________________________________'
+end
+
+# call the methods
+print_header
+print(students)
+print_footer(students)
 

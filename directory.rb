@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-
+require 'date'
 
 #create an array of students
 
@@ -32,20 +32,19 @@ def input_students (default_cohort)
 	#get the first name
 	print "Student name? "
 	name = gets.chomp
-	print "Student cohort? "
-	cohort = gets.chomp
-	cohort = default_cohort if cohort.empty?
+	print "Student cohort? " 
+	cohort = validate(gets.chomp, default_cohort)
+
 	#while name and cohort are both not empty repeat
 	while !name.empty? do
 		#add student hash to the array
 		students << {:name => name, :cohort => cohort}
 		puts "Now, we have #{students.length} student" + (students.length == 1 ? "" : "s")  
 		#get another name/cohort from user
-		print "Name? "
+		print "Student name? "
 		name = gets.chomp
-		print "Cohort? "
-		cohort = gets.chomp 
-		cohort = default_cohort if cohort.empty?
+		print "Student cohort? "
+		cohort = validate(gets.chomp, default_cohort)
 	end
 	# sort the hash
 	students.sort_by!{|hash| hash[:name]  }
@@ -53,11 +52,20 @@ def input_students (default_cohort)
 	students
 end
 
+def validate(cohort, default_cohort)
+	cohort = default_cohort if cohort.empty?
+	while !Date::ABBR_MONTHNAMES.include? cohort and !Date::MONTHNAMES.include? cohort do
+		print "Your month does not appear to be valid. Usage: January or Jan, etc. Please reenter: "
+		cohort = gets.chomp
+	end
+	cohort
+end
+
 # print the header
 def print_header
 	puts '___________________________________________'
 	puts 'The students of my cohort at Makers Academy'
-	puts 'No '+ "Name".center(14)+'Cohort'
+	puts 'No  '+ "Name".ljust(14)+'Cohort'.center(35)
 	puts '___________________________________________'
 end
 
@@ -68,7 +76,7 @@ def print_only_with_conds(students, no_chars)
 
 	while array_counter < students.length do
 		if students[array_counter][:name].length <= no_chars #check the student name is shorter than no_chars
-				puts "#{print_counter}. " + "#{students[array_counter][:name]}".center(14) + "#{students[array_counter][:cohort]}" 
+				puts "#{print_counter}.  " + "#{students[array_counter][:name]}".ljust(14, '.') + "#{students[array_counter][:cohort]}".rjust(20, '.') 
 				print_counter+=1
 		end	
 		array_counter+=1			

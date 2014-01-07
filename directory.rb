@@ -51,10 +51,10 @@ def print_header
 end
 
 # print the body of the table with student names
-def print_only_with_first_letter(students, first_letter)
+def print_only_with_conds(students, no_chars)
 	counter = 0
 	students.each_with_index do |student, index| 
-		if student[:name].split(//).first.upcase == first_letter.upcase
+		if student[:name].length <= no_chars #check the student name is shorter than no_chars
 				puts "#{index+1}.	#{student[:name]}		(#{student[:cohort]} cohort)" 
 				counter+=1
 		end			
@@ -63,23 +63,23 @@ def print_only_with_first_letter(students, first_letter)
 end
 
 # print the footer
-def print_footer(students, number_with_first_letter, first_letter)
+def print_footer(students, number_with_conds, no_chars)
 	puts '___________________________________________'
 	puts "Overall we have #{students.length} great students"
 	puts '___________________________________________'
-	puts "We have #{number_with_first_letter} students whose name starts with #{first_letter}"
+	puts "We have #{number_with_conds} students whose name is fewer than #{no_chars} characters."
 	puts '___________________________________________'
 end
 
 # call the methods
 students = input_students
-first_letter = "a" #Caps only here
+no_chars = 12
 
 #print_header
 #print(students_old)
 #print_footer(students_old)
 
 print_header
-number_with_first_letter = print_only_with_first_letter(students, first_letter)
-print_footer(students, number_with_first_letter, first_letter)
+number_with_conds = print_only_with_conds(students, no_chars)
+print_footer(students, number_with_conds, no_chars)
 

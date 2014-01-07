@@ -35,8 +35,9 @@ def input_students
 	while !name.empty? do
 		#add student hash to the array
 		students << {:name => name, :cohort => :January}
-		puts "Now, we have #{students.length} students."
-		#get anothe rname from user
+		print "Now, we have #{students.length} student"
+		puts "s" unless students.length == 1s.
+		#get another name from user
 		name = gets.chomp 
 	end
 	# sort the hash

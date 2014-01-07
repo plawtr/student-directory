@@ -4,7 +4,7 @@
 
 #create an array of students
 
-students_old = [
+=begin students_old = [
  { :name =>'Andrey', 	:cohort => :January},
  { :name =>'James', 	:cohort => :January},
  { :name =>'Peter', 	:cohort => :January},
@@ -22,6 +22,7 @@ students_old = [
  { :name =>'Liviu', 	:cohort => :January},
  { :name =>'Makis', 	:cohort => :January}
 ]
+=end
 
 #ask for user inout
 def input_students 
@@ -66,9 +67,9 @@ end
 # call the methods
 students = input_students
 
-print_header
-print(students_old)
-print_footer(students_old)
+#print_header
+#print(students_old)
+#print_footer(students_old)
 
 print_header
 print(students)

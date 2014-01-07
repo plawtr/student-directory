@@ -39,7 +39,9 @@ def input_students
 		#get anothe rname from user
 		name = gets.chomp 
 	end
-	#return the array of students
+	# sort the hash
+	students.sort_by!{|hash| hash[:name]  }
+	#return the hash of students
 	students
 end
 

@@ -51,27 +51,35 @@ def print_header
 end
 
 # print the body of the table with student names
-def print(students)
-	students.each do |student| 
-		puts "#{student[:name]}		(#{student[:cohort]} cohort)" 
+def print_only_with_first_letter(students, first_letter)
+	counter = 0
+	students.each_with_index do |student, index| 
+		if student[:name].split(//).first.upcase == first_letter.upcase
+				puts "#{index+1}.	#{student[:name]}		(#{student[:cohort]} cohort)" 
+				counter+=1
+		end			
 	end
+	counter
 end
 
 # print the footer
-def print_footer(students)
+def print_footer(students, number_with_first_letter, first_letter)
 	puts '___________________________________________'
 	puts "Overall we have #{students.length} great students"
+	puts '___________________________________________'
+	puts "We have #{number_with_first_letter} students whose name starts with #{first_letter}"
 	puts '___________________________________________'
 end
 
 # call the methods
 students = input_students
+first_letter = "a" #Caps only here
 
 #print_header
 #print(students_old)
 #print_footer(students_old)
 
 print_header
-print(students)
-print_footer(students)
+number_with_first_letter = print_only_with_first_letter(students, first_letter)
+print_footer(students, number_with_first_letter, first_letter)
 

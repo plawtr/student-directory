@@ -65,9 +65,12 @@ end
 # print the footer
 def print_footer(students, number_with_conds, no_chars)
 	puts '___________________________________________'
-	puts "Overall we have #{students.length} great students"
+	print "Overall we have #{students.length} great student" 
+	puts (students.length == 1 ? "" : "s" )
 	puts '___________________________________________'
-	puts "We have #{number_with_conds} students whose name is fewer than #{no_chars} characters."
+	print "We have #{number_with_conds} student"
+	print "s" unless number_with_conds == 1
+	puts " whose name is fewer than #{no_chars} characters."
 	puts '___________________________________________'
 end
 

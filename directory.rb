@@ -36,7 +36,7 @@ def input_students
 		#add student hash to the array
 		students << {:name => name, :cohort => :January}
 		print "Now, we have #{students.length} student"
-		puts "s" unless students.length == 1s.
+		puts (students.length == 1 ? "" : "s")  
 		#get another name from user
 		name = gets.chomp 
 	end
@@ -55,14 +55,17 @@ end
 
 # print the body of the table with student names
 def print_only_with_conds(students, no_chars)
-	counter = 0
-	students.each_with_index do |student, index| 
-		if student[:name].length <= no_chars #check the student name is shorter than no_chars
-				puts "#{index+1}.	#{student[:name]}		(#{student[:cohort]} cohort)" 
-				counter+=1
-		end			
+	print_counter = 1
+	array_counter = 0
+
+	while array_counter < students.length do
+		if students[array_counter][:name].length <= no_chars #check the student name is shorter than no_chars
+				puts "#{print_counter}. #{students[array_counter][:name]}	(#{students[array_counter][:cohort]} cohort)" 
+				print_counter+=1
+		end	
+		array_counter+=1			
 	end
-	counter
+	print_counter-1
 end
 
 # print the footer

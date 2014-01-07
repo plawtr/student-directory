@@ -25,20 +25,27 @@
 =end
 
 #ask for user inout
-def input_students 
-	puts "Please enter the names of the students and their cohorts (default is January).\nTo finish, just hit return twice."
+def input_students (default_cohort)
+	puts "Please enter the names of the students and their cohorts (default is January).\nTo finish, just hit return two times."
 	#create an empty array
 	students = []
 	#get the first name
+	print "Student name? "
 	name = gets.chomp
+	print "Student cohort? "
 	cohort = gets.chomp
-	#while name is not empty repeat
+	cohort = default_cohort if cohort.empty?
+	#while name and cohort are both not empty repeat
 	while !name.empty? do
 		#add student hash to the array
-		students << {:name => name, :cohort => :January}
+		students << {:name => name, :cohort => cohort}
 		puts "Now, we have #{students.length} student" + (students.length == 1 ? "" : "s")  
-		#get another name from user
-		name = gets.chomp 
+		#get another name/cohort from user
+		print "Name? "
+		name = gets.chomp
+		print "Cohort? "
+		cohort = gets.chomp 
+		cohort = default_cohort if cohort.empty?
 	end
 	# sort the hash
 	students.sort_by!{|hash| hash[:name]  }
@@ -50,6 +57,7 @@ end
 def print_header
 	puts '___________________________________________'
 	puts 'The students of my cohort at Makers Academy'
+	puts 'No '+ "Name".center(14)+'Cohort'
 	puts '___________________________________________'
 end
 
@@ -60,7 +68,7 @@ def print_only_with_conds(students, no_chars)
 
 	while array_counter < students.length do
 		if students[array_counter][:name].length <= no_chars #check the student name is shorter than no_chars
-				puts "#{print_counter}. " + "#{students[array_counter][:name]}".center(16) + " (#{students[array_counter][:cohort]} cohort)".center(20) 
+				puts "#{print_counter}. " + "#{students[array_counter][:name]}".center(14) + "#{students[array_counter][:cohort]}" 
 				print_counter+=1
 		end	
 		array_counter+=1			
@@ -73,13 +81,16 @@ def print_footer(students, number_with_conds, no_chars)
 	puts '___________________________________________'
 	puts "Overall we have #{students.length} great student" + (students.length == 1 ? "" : "s" )
 	puts '___________________________________________'
-	puts "We have #{number_with_conds} student" + (number_with_conds == 1 ? "" : "s") + " whose name is fewer than #{no_chars} characters."
+	puts "We have #{number_with_conds} student" + (number_with_conds == 1 ? "" : "s") + " whose name is fewer than\n#{no_chars} characters."
 	puts '___________________________________________'
 end
 
-# call the methods
-students = input_students
 no_chars = 12
+default_cohort = "January"
+
+# call the methods
+students = input_students(default_cohort)
+
 
 #print_header
 #print(students_old)

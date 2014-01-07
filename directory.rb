@@ -26,17 +26,17 @@
 
 #ask for user inout
 def input_students 
-	puts "Please enter the names of the students.\nTo finish, just hit return twice."
+	puts "Please enter the names of the students and their cohorts (default is January).\nTo finish, just hit return twice."
 	#create an empty array
 	students = []
 	#get the first name
 	name = gets.chomp
+	cohort = gets.chomp
 	#while name is not empty repeat
 	while !name.empty? do
 		#add student hash to the array
 		students << {:name => name, :cohort => :January}
-		print "Now, we have #{students.length} student"
-		puts (students.length == 1 ? "" : "s")  
+		puts "Now, we have #{students.length} student" + (students.length == 1 ? "" : "s")  
 		#get another name from user
 		name = gets.chomp 
 	end
@@ -60,7 +60,7 @@ def print_only_with_conds(students, no_chars)
 
 	while array_counter < students.length do
 		if students[array_counter][:name].length <= no_chars #check the student name is shorter than no_chars
-				puts "#{print_counter}. #{students[array_counter][:name]}	(#{students[array_counter][:cohort]} cohort)" 
+				puts "#{print_counter}. " + "#{students[array_counter][:name]}".center(16) + " (#{students[array_counter][:cohort]} cohort)".center(20) 
 				print_counter+=1
 		end	
 		array_counter+=1			
@@ -71,12 +71,9 @@ end
 # print the footer
 def print_footer(students, number_with_conds, no_chars)
 	puts '___________________________________________'
-	print "Overall we have #{students.length} great student" 
-	puts (students.length == 1 ? "" : "s" )
+	puts "Overall we have #{students.length} great student" + (students.length == 1 ? "" : "s" )
 	puts '___________________________________________'
-	print "We have #{number_with_conds} student"
-	print "s" unless number_with_conds == 1
-	puts " whose name is fewer than #{no_chars} characters."
+	puts "We have #{number_with_conds} student" + (number_with_conds == 1 ? "" : "s") + " whose name is fewer than #{no_chars} characters."
 	puts '___________________________________________'
 end
 

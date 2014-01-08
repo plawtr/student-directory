@@ -26,12 +26,12 @@ require 'date'
 
 #ask for user inout
 def input_students (default_cohort)
-	puts "Please enter the names of the students and their cohorts (default is January).\nTo finish, just hit return two times."
+	puts "Please enter the names of the students and their cohorts (default is #{default_cohort}).\nTo finish, just hit return two times."
 	#create an empty array
 	students = []
 	#get the first name
 	print "Student name? "
-	name = gets.chomp
+	name = new_chomp(gets)
 	print "Student cohort month? (Usage: January or Jan, etc.)? " 
 	cohort = validate(gets.chomp, default_cohort)
 
@@ -65,10 +65,10 @@ def validate(cohort, default_cohort)
 end
 
 # print the header
-def print_header
+def print_header(no_chars)
 	puts '___________________________________________'
 	puts 'The students of my cohort at Makers Academy'
-	puts 'No  '+ "Name".ljust(14)+'Cohort'.center(35)
+	puts 'No  '+ "Name".ljust(no_chars+2)+'Cohort'.center(no_chars+17)
 	puts '___________________________________________'
 end
 
@@ -76,28 +76,46 @@ end
 def print_only_with_conds(students, no_chars)
 	print_counter = 1
 	array_counter = 0
-
 	while array_counter < students.length do
 		if students[array_counter][:name].length <= no_chars #check the student name is shorter than no_chars
-				puts "#{print_counter}.  " + "#{students[array_counter][:name]}".ljust(14, '.') + "#{students[array_counter][:cohort]}".rjust(20, '.') 
+				puts "#{print_counter}.  " + "#{students[array_counter][:name]}".ljust(no_chars+2, '.') + "#{students[array_counter][:cohort]}".rjust(no_chars+6, '.') 
 				print_counter+=1
 		end	
 		array_counter+=1			
 	end
+	puts '___________________________________________' unless students.empty?
 	print_counter-1
 end
 
 # print the footer
 def print_footer(students, number_with_conds, no_chars)
-	puts '___________________________________________'
 	puts "Overall we have #{students.length} great student" + (students.length == 1 ? "" : "s" )
 	puts '___________________________________________'
 	puts "We have #{number_with_conds} student" + (number_with_conds == 1 ? "" : "s") + " whose name is fewer than\n#{no_chars} characters."
 	puts '___________________________________________'
 end
 
+def print_by_cohort(students, no_chars)
+        print_counter = 0;
+        Date::MONTHNAMES.each do |month|
+                if !month.nil?
+                        print_counter+=print_only_with_conds(students.select{|entry| entry[:cohort] == month}, no_chars)
+                end
+        end 
+    print_counter
+end
+
+def new_chomp(input)
+        is_penultimate_char_carriage = (input[-2] == "\r") or (input[-2] == "\n")
+        #chop off the last character and penultimate character if it is a carriage return
+        input.slice(0...(-1*(is_penultimate_char_carriage ? 2 : 1)))
+
+end
+
+
 no_chars = 12
 default_cohort = "January"
+print_counter = 0
 
 # call the methods
 students = input_students(default_cohort)
@@ -107,7 +125,11 @@ students = input_students(default_cohort)
 #print(students_old)
 #print_footer(students_old)
 
-print_header
-number_with_conds = print_only_with_conds(students, no_chars)
-print_footer(students, number_with_conds, no_chars)
+print_header(no_chars)
+print_counter = print_by_cohort(students, no_chars)
+print_footer(students, print_counter, no_chars)
+
+
+        
+                
 

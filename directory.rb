@@ -32,7 +32,7 @@ def input_students (default_cohort)
 	#get the first name
 	print "Student name? "
 	name = gets.chomp
-	print "Student cohort? " 
+	print "Student cohort month? (Usage: January or Jan, etc.)? " 
 	cohort = validate(gets.chomp, default_cohort)
 
 	#while name and cohort are both not empty repeat
@@ -54,10 +54,13 @@ end
 
 def validate(cohort, default_cohort)
 	cohort = default_cohort if cohort.empty?
+	cohort.capitalize!
 	while !Date::ABBR_MONTHNAMES.include? cohort and !Date::MONTHNAMES.include? cohort do
 		print "Your month does not appear to be valid. Usage: January or Jan, etc. Please reenter: "
 		cohort = gets.chomp
+		cohort.capitalize!
 	end
+	cohort = Date::MONTHNAMES[Date::ABBR_MONTHNAMES.index(cohort)] if Date::ABBR_MONTHNAMES.include? cohort
 	cohort
 end
 

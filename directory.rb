@@ -118,6 +118,14 @@ def process(selection)
 	end 
 end
 
+def save_students
+	# open the file for writing
+	file=File.open("students.csv", "w") 
+	@students
+
+end
+
+
 
 @no_chars = 12
 @default_cohort = "January"

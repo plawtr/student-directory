@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'date'
+require 'csv' 
 
 def interactive_menu
 
@@ -24,7 +25,7 @@ def input_students
 	#while name and cohort are both not empty repeat
 	while !name.empty? do
 		#add student hash to the array
-		@students << {:name => name, :cohort => cohort}
+		add_students(name, cohort)
 		puts "Now, we have #{@students.length} student" + (@students.length == 1 ? "" : "s")  
 		#get another name/cohort from user
 		print "Student name? "
@@ -95,8 +96,8 @@ def print_menu
 	puts '___________________________________________'
 	puts "1. Input the students."
 	puts "2. Show the students."
-	puts "3. Save the list to students.csv."
-	puts "4. Load the list from students.csv."
+	puts "3. Save the list to a file."
+	puts "4. Load the list from a file."
 	puts "9. Exit."
 	puts '___________________________________________'
 end
@@ -124,41 +125,56 @@ def process(selection)
 	end 
 end
 
-def save_students
+def save_students(filename=get_filename)
 	# open the file for writing
-	file=File.open("students.csv", "w") 
-	@students.each do |student|
-		student_data = [student[:name], student[:cohort]]
-		csv_line = student_data.join(",")
-		file.puts csv_line
-	end 
-	file.close
+	File.open(filename, "w") do |file| 
+		@students.each do |student|
+			student_data = [student[:name], student[:cohort]]
+			csv_line = student_data.join(",")
+			file.puts csv_line
+		end 
+	puts "Saved #{@students.length} student" + (@students.length == 1 ? "" : "s") + " to #{filename}"
+	end
 end
 
-def load_students(filename="students.csv")
-	file = File.open(filename, "r")
-	file.readlines.each do |line|
-		name, cohort = line.chomp.split(",")
-		@students << {:name => name, :cohort=> cohort}
+def load_students(filename=get_filename)
+	filename = @default_filename if !File.exists?(filename)
+	CSV.foreach(filename) do |line|
+		name, cohort = line
+		add_students(name, cohort)
 	end
-	file.close
+	puts "Loaded #{@students.length} students" + (@students.length == 1 ? "" : "s") + " from #{filename}"
 end
+
 
 def try_load_students
 	filename = ARGV.first #first argument from the command line
 	return if filename.nil?
 	if File.exists?(filename)
 		load_students(filename)
-		puts "Loaded #{@students.length} from #{filename}"
+		
 	else 
 		puts "Sorry, #{filename} does not exist."
 		exit
 	end
 end
 
+def add_students(name, cohort)
+	@students << {:name => name, :cohort => cohort}
+end
 
-@no_chars = 12
+def get_filename
+	print "File name? Press return for default #{@default_filename}:  "
+	filename = STDIN.gets.chomp
+	puts "#{filename} does not exist" if !File.exists?(filename)
+	return @default_filename if filename.nil? 
+	return filename
+end
+
+
+@no_chars = 12  #upper character limit for student name display 
 @default_cohort = "January"
+@default_filename = "students.csv"
 print_counter = 0
 @students = [] # an empty array accessible to all methods
 
@@ -167,9 +183,4 @@ try_load_students #try to load the file passed by ARGV
 # call the methods
 
 interactive_menu
-
-
-
-        
-                
 

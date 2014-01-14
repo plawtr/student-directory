@@ -22,7 +22,7 @@ def interactive_menu
 
 		case selection
 		when "1" # input students
-			students = input_students
+			students = input_students(students)
 		when "2" # show students
 			print_header
 			print_counter = print_by_cohort(students)
@@ -39,10 +39,8 @@ end
 
 
 #ask for user input
-def input_students 
+def input_students(students) 
 	puts "Please enter the names of the students and their cohorts (default is #{@default_cohort}).\nTo finish, just hit return two times."
-	#create an empty array
-	students = []
 	#get the first name
 	print "Student name? "
 	name = new_chomp(gets)
@@ -132,13 +130,11 @@ end
 print_counter = 0
 
 # call the methods
-students = input_students
 
 
 
-print_header
-print_counter = print_by_cohort(students)
-print_footer(students, print_counter)
+interactive_menu
+
 
 
         

@@ -143,7 +143,7 @@ def load_students(filename=get_filename)
 		name, cohort = line
 		add_students(name, cohort)
 	end
-	puts "Loaded #{@students.length} students" + (@students.length == 1 ? "" : "s") + " from #{filename}"
+	puts "Loaded #{@students.length} student" + (@students.length == 1 ? "" : "s") + " from #{filename}"
 end
 
 

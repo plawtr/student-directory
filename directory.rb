@@ -7,7 +7,7 @@ def interactive_menu
 	loop do 
 		print_menu
 		# - read the input and save it into a variable
-		process(gets.chomp)
+		process(STDIN.gets.chomp)
 	end
 
 end
@@ -17,9 +17,9 @@ def input_students
 	puts "Please enter the names of the students and their cohorts (default is #{@default_cohort}).\nTo finish, just hit return two times."
 	#get the first name
 	print "Student name? "
-	name = gets.chomp
+	name = STDIN.gets.chomp
 	print "Student cohort month? (Usage: January or Jan, etc.)? " 
-	cohort = validate(gets.chomp)
+	cohort = validate(STDIN.gets.chomp)
 
 	#while name and cohort are both not empty repeat
 	while !name.empty? do
@@ -28,9 +28,9 @@ def input_students
 		puts "Now, we have #{@students.length} student" + (@students.length == 1 ? "" : "s")  
 		#get another name/cohort from user
 		print "Student name? "
-		name = gets.chomp
+		name = STDIN.gets.chomp
 		print "Student cohort? "
-		cohort = validate(gets.chomp)
+		cohort = validate(STDIN.gets.chomp)
 	end
 	# sort the hash
 	@students.sort_by!{|hash| hash[:name]  }
@@ -42,7 +42,7 @@ def validate(cohort)
 	cohort.capitalize!
 	while !Date::ABBR_MONTHNAMES.include? cohort and !Date::MONTHNAMES.include? cohort do
 		print "Your month does not appear to be valid. Usage: January or Jan, etc. Please reenter: "
-		cohort = gets.chomp
+		cohort = STDIN.gets.chomp
 		cohort.capitalize!
 	end
 	cohort = Date::MONTHNAMES[Date::ABBR_MONTHNAMES.index(cohort)] if Date::ABBR_MONTHNAMES.include? cohort
@@ -109,9 +109,9 @@ end
 
 def process(selection)
 	case selection
-	when "1" # input students
+	when "1" 
 		input_students
-	when "2" # show students
+	when "2" 
 		show_students
 	when "3"
 		save_students
@@ -135,13 +135,25 @@ def save_students
 	file.close
 end
 
-def load_students
-	file = File.open("students.csv", "r")
+def load_students(filename="students.csv")
+	file = File.open(filename, "r")
 	file.readlines.each do |line|
 		name, cohort = line.chomp.split(",")
 		@students << {:name => name, :cohort=> cohort}
 	end
 	file.close
+end
+
+def try_load_students
+	filename = ARGV.first #first argument from the command line
+	return if filename.nil?
+	if File.exists?(filename)
+		load_students(filename)
+		puts "Loaded #{@students.length} from #{filename}"
+	else 
+		puts "Sorry, #{filename} does not exist."
+		exit
+	end
 end
 
 
@@ -150,6 +162,8 @@ end
 print_counter = 0
 @students = [] # an empty array accessible to all methods
 
+
+try_load_students #try to load the file passed by ARGV
 # call the methods
 
 interactive_menu

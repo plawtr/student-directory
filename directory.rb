@@ -2,56 +2,30 @@
 
 require 'date'
 
-
 def interactive_menu
-	
-	students = []
 
 	loop do 
-		# - print the menu and ask the user what to do
-		puts '___________________________________________'
-		puts "1. Input the students."
-		puts "2. Show the students."
-		puts "9. Exit."
-		puts '___________________________________________'
-
+		print_menu
 		# - read the input and save it into a variable
-		selection = gets.chomp
-
-		# - do what the user has asked
-
-		case selection
-		when "1" # input students
-			students = input_students(students)
-		when "2" # show students
-			print_header
-			print_counter = print_by_cohort(students)
-			print_footer(students, print_counter)
-		when "9" 
-			exit
-		else 
-			puts "I do not know what you mean. Try again."
-		end 
-
+		process(gets.chomp)
 	end
 
 end
 
-
 #ask for user input
-def input_students(students) 
+def input_students 
 	puts "Please enter the names of the students and their cohorts (default is #{@default_cohort}).\nTo finish, just hit return two times."
 	#get the first name
 	print "Student name? "
-	name = new_chomp(gets)
+	name = gets.chomp
 	print "Student cohort month? (Usage: January or Jan, etc.)? " 
 	cohort = validate(gets.chomp)
 
 	#while name and cohort are both not empty repeat
 	while !name.empty? do
 		#add student hash to the array
-		students << {:name => name, :cohort => cohort}
-		puts "Now, we have #{students.length} student" + (students.length == 1 ? "" : "s")  
+		@students << {:name => name, :cohort => cohort}
+		puts "Now, we have #{@students.length} student" + (@students.length == 1 ? "" : "s")  
 		#get another name/cohort from user
 		print "Student name? "
 		name = gets.chomp
@@ -59,9 +33,8 @@ def input_students(students)
 		cohort = validate(gets.chomp)
 	end
 	# sort the hash
-	students.sort_by!{|hash| hash[:name]  }
-	#return the hash of students
-	students
+	@students.sort_by!{|hash| hash[:name]  }
+
 end
 
 def validate(cohort)
@@ -100,38 +73,58 @@ def print_only_with_conds(students)
 end
 
 # print the footer
-def print_footer(students, print_counter)
-	puts "Overall we have #{students.length} great student" + (students.length == 1 ? "" : "s" )
+def print_footer(print_counter)
+	puts "Overall we have #{@students.length} great student" + (@students.length == 1 ? "" : "s" )
 	puts '___________________________________________'
 	puts "We have #{print_counter} student" + (print_counter == 1 ? "" : "s") + " whose name is fewer than\n#{@no_chars} characters."
 	puts '___________________________________________'
 end
 
-def print_by_cohort(students)
+def print_students_by_cohort
         print_counter = 0;
         Date::MONTHNAMES.each do |month|
                 if !month.nil?
-                        print_counter+=print_only_with_conds(students.select{|entry| entry[:cohort] == month})
+                        print_counter+=print_only_with_conds(@students.select{|entry| entry[:cohort] == month})
                 end
         end
     return print_counter
 end
 
-def new_chomp(input)
-        is_penultimate_char_carriage = (input[-2] == "\r") or (input[-2] == "\n")
-        #chop off the last character and penultimate character if it is a carriage return
-        input.slice(0...(-1*(is_penultimate_char_carriage ? 2 : 1)))
+def print_menu
+	# - print the menu and ask the user what to do
+	puts '___________________________________________'
+	puts "1. Input the students."
+	puts "2. Show the students."
+	puts "9. Exit."
+	puts '___________________________________________'
+end
 
+def show_students
+	print_header
+	print_counter = print_students_by_cohort
+	print_footer(print_counter)
+end
+
+def process(selection)
+	case selection
+	when "1" # input students
+		input_students
+	when "2" # show students
+		show_students
+	when "9" 
+		exit
+	else 
+		puts "I do not know what you mean. Try again."
+	end 
 end
 
 
 @no_chars = 12
 @default_cohort = "January"
 print_counter = 0
+@students = [] # an empty array accessible to all methods
 
 # call the methods
-
-
 
 interactive_menu
 
